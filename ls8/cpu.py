@@ -19,7 +19,9 @@ AND = 0b10101000
 OR = 0b10101010
 XOR =0b10101011
 NOT =0b01101001
-
+SHL = 0b10101100
+SHR = 0b10101101
+MOD = 0b10100100
 class CPU:
     """Main CPU class."""
 
@@ -49,10 +51,14 @@ class CPU:
         self.branchtable[JMP] = self.handle_JMP
         self.branchtable[JNE] = self.handle_JNE
         self.branchtable[JEQ] = self.handle_JEQ
+        #stretch
         self.branchtable[AND] = self.handle_AND
         self.branchtable[OR] = self.handle_OR
         self.branchtable[XOR] = self.handle_XOR
         self.branchtable[NOT] = self.handle_NOT
+        self.branchtable[SHL] = self.handle_SHL
+        self.branchtable[SHR] = self.handle_SHR
+        self.branchtable[MOD] = self.handle_MOD
     def handle_LDI(self, a, b):
 
         self.reg[a] = b
@@ -235,6 +241,36 @@ class CPU:
 
         self.pc +=2
 
+    def handle_SHL(self, a, b):
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+
+        self.reg[a] = value_a << value_b
+        self.pc +=3
+
+    def handle_SHR(self, a, b):
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+
+        self.reg[a] = value_a >> value_b
+        self.pc +=3
+
+    def handle_MOD(self, a , b):
+        # Divide the value in the first register by the value in the second, storing the remainder of the result in registerA.
+
+        # If the value in the second register is 0, the system should print an error message and halt.
+
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+
+        value_c = value_a % value_b
+        if value_c == 0:
+            print("The value is 0 err")
+            self.running = False
+        else:
+            self.reg[a] = value_c
+            self.pc +=3
+    
     def trace(self):
         """
         Handy function to print out the CPU state. You might want to call this
