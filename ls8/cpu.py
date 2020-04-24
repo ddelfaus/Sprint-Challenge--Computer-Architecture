@@ -15,8 +15,10 @@ JMP = 0b01010100
 CMP = 0b10100111
 JNE = 0b01010110
 JEQ = 0b01010101
-
-
+AND = 0b10101000
+OR = 0b10101010
+XOR =0b10101011
+NOT =0b01101001
 
 class CPU:
     """Main CPU class."""
@@ -47,7 +49,10 @@ class CPU:
         self.branchtable[JMP] = self.handle_JMP
         self.branchtable[JNE] = self.handle_JNE
         self.branchtable[JEQ] = self.handle_JEQ
-
+        self.branchtable[AND] = self.handle_AND
+        self.branchtable[OR] = self.handle_OR
+        self.branchtable[XOR] = self.handle_XOR
+        self.branchtable[NOT] = self.handle_NOT
     def handle_LDI(self, a, b):
 
         self.reg[a] = b
@@ -176,6 +181,59 @@ class CPU:
             self.reg[reg_a] *= self.reg[reg_b]
         else:
             raise Exception("Unsupported ALU operation")
+
+    def handle_AND(self, a, b):
+        # Bitwise-AND the values in registerA and registerB, then store the result in registerA.
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+            
+        if value_a & value_b == 1:
+            self.reg[a] = 1
+
+        else:
+            self.reg[a] = 0
+        
+        self.pc +=3
+
+    def handle_OR(self, a , b):
+     # Perform a bitwise-OR between the values in registerA and registerB, storing the result in registerA.
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+
+        if value_a | value_b == 1:
+            self.reg[a] = 1
+
+        else:
+            self.reg[a] = 0
+        
+        self.pc +=3
+    
+    def handle_XOR(self, a,b):
+        
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+        if value_a & value_b == 1:
+            self.reg[a] = 0
+        
+        elif value_a | value_b == 1:
+            self.reg[a] = 1
+
+        else:
+            self.reg[a] = 0
+
+        self.pc +=3
+
+    def handle_NOT(self,a):
+    
+    #set true to false and false to true?
+        value_a = self.reg[a]
+
+        if value_a == 1:
+            self.reg[a] = 0
+        else: 
+            self.reg[a] = 1
+
+        self.pc +=2
 
     def trace(self):
         """
