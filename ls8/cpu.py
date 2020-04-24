@@ -114,25 +114,25 @@ class CPU:
         value_a = self.reg[a]
         value_b = self.reg[b]
 
-
+       
         #compare and set flag
         # If they are equal, set the Equal E flag to 1, otherwise set it to 0.
         if value_a == value_b:
-            self.flag_E == 1
+            self.flag_E = 1
         else:
-            self.flag_E == 0
+            self.flag_E = 0
         
         # If registerA is less than registerB, set the Less-than L flag to 1, otherwise set it to 0.
         if value_a < value_b:
-            self.flag_L == 1
+            self.flag_L = 1
         else:
-            self.flag_L == 0
+            self.flag_L = 0
         # If registerA is greater than registerB, set the Greater-than G flag to 1, otherwise set it to 0.
     
         if value_a > value_b:
-            self.flag_G== 1
+            self.flag_G= 1
         else:
-            self.flag_G == 0
+            self.flag_G = 0
          #increment
         self.pc +=3
 
@@ -144,17 +144,22 @@ class CPU:
         self.pc = self.reg[a]
 
     def handle_JEQ(self,a):
+       
         if self.flag_E == 1:
         # If equal flag is set (true), jump to the address stored in the given register.
             self.pc = self.reg[a]
+          
         else: 
+            
             self.pc += 2
     def handle_JNE(self, a):
         # If E flag is clear (false, 0), jump to the address stored in the given register.
         if self.flag_E == 0:
             self.pc = self.reg[a]
+            
         else: 
             self.pc += 2
+           
     def load(self, filename):
         """Load a program into memory."""
 
@@ -170,7 +175,7 @@ class CPU:
                     continue
 
                 self.ram[address] = int(line, 2)
-
+             
                 count = count + 1
                 # print(line)
                 # print(count)
