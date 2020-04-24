@@ -11,6 +11,9 @@ POP = 0b01000110
 CALL = 0b01010000
 ADD = 0b10100000
 RET = 0b00010001
+JMP = 0b01010100
+CMP = 0b10100111
+
 
 
 
@@ -39,6 +42,8 @@ class CPU:
         self.branchtable[POP] = self.handle_POP
         self.branchtable[CALL] = self.handle_CALL
         self.branchtable[RET] = self.handle_RET
+        self.branchtable[CMP] = self.handle_CMP
+        self.branchtable[JMP] = self.handle_JMP
 
     def handle_LDI(self, a, b):
 
@@ -109,21 +114,20 @@ class CPU:
         else:
             self.flag_L == 0
         # If registerA is greater than registerB, set the Greater-than G flag to 1, otherwise set it to 0.
-       
-
+    
         if value_A > value_b:
-            self.flag_L == 1
+            self.flag_G== 1
         else:
-            self.flag_L == 0
+            self.flag_G == 0
          #increment
         self.pc +=3
 
     def handle_JUMP(self, a):
 
         # Jump to the address stored in the given register.
-
+         
         # Set the PC to the address stored in the given register.
-        
+        self.pc = self.reg[a]
     def load(self, filename):
         """Load a program into memory."""
 
