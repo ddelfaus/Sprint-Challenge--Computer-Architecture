@@ -25,6 +25,9 @@ class CPU:
         self.reg[self.SP] = 0xF4
         self.IR = 0
         self.pc = 0  # counter
+        self.flag_E = 0
+        self.flag_G = 0
+        self.flag_L = 0 
         self.running = True
         self.branchtable = {}
         self.branchtable[LDI] = self.handle_LDI
@@ -89,17 +92,37 @@ class CPU:
     
     def handle_CMP(self, a, b):
         #get value
+        value_a = self.reg[a]
+        value_b = self.reg[b]
+
 
         #compare and set flag
         # If they are equal, set the Equal E flag to 1, otherwise set it to 0.
-
+        if value_a == value_b:
+            self.flag_E == 1
+        else:
+            self.flag_E == 0
+        
         # If registerA is less than registerB, set the Less-than L flag to 1, otherwise set it to 0.
-
+        if value_A < value_b:
+            self.flag_L == 1
+        else:
+            self.flag_L == 0
         # If registerA is greater than registerB, set the Greater-than G flag to 1, otherwise set it to 0.
-        #increment
-        pass
+       
+
+        if value_A > value_b:
+            self.flag_L == 1
+        else:
+            self.flag_L == 0
+         #increment
+        self.pc +=3
+
     def handle_JUMP(self, a):
-        pass
+
+        # Jump to the address stored in the given register.
+
+        # Set the PC to the address stored in the given register.
         
     def load(self, filename):
         """Load a program into memory."""
